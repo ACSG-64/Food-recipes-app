@@ -1,12 +1,14 @@
+import {useLayoutEffect} from "react";
 import {Image, ScrollView, StyleSheet, Text, View} from "react-native";
 
 import {MEALS} from "../data/dummy-data";
 
 import List from "../components/RecipeScreen/List";
+import IconButton from "../components/IconButton";
 
 import Colors from "../res/Colors";
 
-export default function Recipe({route}) {
+export default function Recipe({route, navigation}) {
     const {mealId} = route.params; // Get the mealId from the parameters
     const {
         title,
@@ -16,7 +18,12 @@ export default function Recipe({route}) {
         affordability,
         ingredients,
         steps
-    } = MEALS.find((meal) => meal.id === mealId); // Search for the meal using the Id
+    } = MEALS.find((meal) => meal.id === mealId);
+
+    useLayoutEffect(
+        () => navigation.setOptions({headerRight: () => <IconButton />}),
+        [navigation]
+    );
 
     return (
         <ScrollView>
@@ -85,5 +92,5 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         paddingHorizontal: 8,
         paddingVertical: 2,
-    }
+    },
 });
