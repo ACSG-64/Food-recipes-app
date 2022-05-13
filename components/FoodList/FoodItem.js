@@ -5,6 +5,7 @@ import {useNavigation} from "@react-navigation/native";
 export default function FoodItem({mealId, title, imageUrl, duration, complexity, affordability}) {
     const navigation = useNavigation();
 
+    // The component can navigate to the 'Recipe' screen passing the mealId as the parameter
     const navigateToDetail = () => navigation.navigate('Recipe', {mealId});
 
     return (
