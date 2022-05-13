@@ -1,12 +1,15 @@
 import {Pressable, StyleSheet, Text, View} from "react-native";
+import CommonStyles from "../res/CommonStyles";
 
-export default function CategoryGridItem({title, color}) {
+export default function CategoryGridItem({title, color, onPress}) {
     return (
         <View style={styles.item}>
-            <Pressable style={({pressed}) => [
-                styles.button, {backgroundColor: color},
-                pressed && styles.buttonPressed
-            ]}>
+            <Pressable
+                style={({pressed}) => [
+                    styles.button, {backgroundColor: color},
+                    pressed && CommonStyles.buttonPressed
+                ]}
+                onPress={onPress}>
                 <View style={styles.innerContainer}>
                     <Text style={styles.title}>{title}</Text>
                 </View>
@@ -20,26 +23,17 @@ const styles = StyleSheet.create({
         flex: 1,
         height: 150,
         margin: 16,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.23,
-        shadowRadius: 2.62,
-        elevation: 4,
+        borderRadius: 8,
+        ...CommonStyles.cardElevation4,
     },
     button: {
         flex: 1,
         borderRadius: 8,
     },
-    buttonPressed: {
-      opacity: 0.75,
-    },
     innerContainer: {
         flex: 1,
         padding: 8,
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
         alignItems: 'center',
     },
     title: {
