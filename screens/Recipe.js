@@ -1,5 +1,7 @@
 import {useLayoutEffect} from "react";
 import {Image, ScrollView, StyleSheet, Text, View} from "react-native";
+import {useDispatch, useSelector} from "react-redux";
+import {addBookmark, removeBookmark} from "../store/bookmarks";
 
 import {MEALS} from "../data/dummy-data";
 
@@ -9,6 +11,9 @@ import IconButton from "../components/IconButton";
 import Colors from "../res/Colors";
 
 export default function Recipe({route, navigation}) {
+    const bookmarkIds = useSelector((state) => state.bookmarks.ids);
+    const dispatch = useDispatch();
+
     const {mealId} = route.params; // Get the mealId from the parameters
     const {
         title,
@@ -20,9 +25,19 @@ export default function Recipe({route, navigation}) {
         steps
     } = MEALS.find((meal) => meal.id === mealId);
 
+    const isBookmarked = bookmarkIds.includes(mealId); // Check on the store if the recipe is bookmarked
+
+    const toggleBookmarkStateHandler =
+        () => isBookmarked
+            ? dispatch(removeBookmark({id: mealId}))
+            : dispatch(addBookmark({id: mealId}));
+
     useLayoutEffect(
-        () => navigation.setOptions({headerRight: () => <IconButton />}),
-        [navigation]
+        () => navigation.setOptions({
+            headerRight: () => <IconButton iconName={isBookmarked ? 'bookmark' : 'bookmark-outline'}
+                                           onPress={toggleBookmarkStateHandler}/>
+        }),
+        [navigation, isBookmarked, bookmarkIds]
     );
 
     return (

@@ -3,8 +3,9 @@ import 'react-native-gesture-handler';
 import {StatusBar} from 'expo-status-bar';
 import {NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import {createDrawerNavigator} from "@react-navigation/drawer";
 import {Ionicons} from "@expo/vector-icons";
+import {createDrawerNavigator} from "@react-navigation/drawer";
+import {Provider} from "react-redux";
 
 import Categories from "./screens/Categories";
 import Overview from "./screens/Overview";
@@ -12,6 +13,7 @@ import Recipe from "./screens/Recipe";
 import Bookmarks from "./screens/Bookmarks";
 
 import Colors from "./res/Colors";
+import {store} from "./store/store";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -49,20 +51,22 @@ export default function App() {
     return (
         <>
             <StatusBar style="light"/>
-            <NavigationContainer>
-                <Stack.Navigator
-                    initialRouteName="Drawer"
-                    screenOptions={{
-                        headerStyle: {backgroundColor: Colors.brown},
-                        headerTintColor: 'white',
-                        contentStyle: {backgroundColor: Colors.darkBrown}
-                    }}>
-                    <Stack.Screen name="Drawer" component={DrawerNavigator}
-                                  options={{headerShown: false}}/>
-                    <Stack.Screen name="Overview" component={Overview}/>
-                    <Stack.Screen name="Recipe" component={Recipe}/>
-                </Stack.Navigator>
-            </NavigationContainer>
+            <Provider store={store}>
+                <NavigationContainer>
+                    <Stack.Navigator
+                        initialRouteName="Drawer"
+                        screenOptions={{
+                            headerStyle: {backgroundColor: Colors.brown},
+                            headerTintColor: 'white',
+                            contentStyle: {backgroundColor: Colors.darkBrown}
+                        }}>
+                        <Stack.Screen name="Drawer" component={DrawerNavigator}
+                                      options={{headerShown: false}}/>
+                        <Stack.Screen name="Overview" component={Overview}/>
+                        <Stack.Screen name="Recipe" component={Recipe}/>
+                    </Stack.Navigator>
+                </NavigationContainer>
+            </Provider>
         </>
     );
 }
